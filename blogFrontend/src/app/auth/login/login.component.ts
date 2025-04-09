@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -15,14 +15,20 @@ export class LoginComponent {
   loginForm: FormGroup;
   errorMessage: string = '';
   isLoading: boolean = false;
-  returnUrl: string =  'auth/social-callback';
+  returnUrl: string = '/dashboard'; // Default return URL
+  showSocialLoginSuggestion: boolean = false;
+  suggestedProvider: string = '';
+  private isBrowser: boolean;
   
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    @Inject(PLATFORM_ID) platformId: Object
   ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+    
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -93,19 +99,6 @@ export class LoginComponent {
     }
   }
   
-  // Add these properties to your component class
-  showSocialLoginSuggestion: boolean = false;
-  suggestedProvider: string = '';
-  
-  // Add a method to handle the suggested login
-  loginWithSuggestedProvider() {
-    if (this.suggestedProvider === 'google') {
-      this.loginWithGoogle();
-    } else if (this.suggestedProvider === 'facebook') {
-      this.loginWithFacebook();
-    }
-  }
-  
   // Helper method to mark all form controls as touched
   markFormGroupTouched(formGroup: FormGroup) {
     Object.values(formGroup.controls).forEach(control => {
@@ -117,12 +110,24 @@ export class LoginComponent {
   }
 
   loginWithGoogle() {
-    this.authService.storeReturnUrl(this.returnUrl);
-    this.authService.handleSocialLoginRedirect('google');
+    if (this.isBrowser) {
+      this.authService.storeReturnUrl(this.returnUrl);
+      this.authService.handleSocialLoginRedirect('google');
+    }
   }
 
   loginWithFacebook() {
-    this.authService.storeReturnUrl(this.returnUrl);
-    this.authService.handleSocialLoginRedirect('facebook');
+    if (this.isBrowser) {
+      this.authService.storeReturnUrl(this.returnUrl);
+      this.authService.handleSocialLoginRedirect('facebook');
+    }
+  }
+  
+  loginWithSuggestedProvider() {
+    if (this.suggestedProvider === 'google') {
+      this.loginWithGoogle();
+    } else if (this.suggestedProvider === 'facebook') {
+      this.loginWithFacebook();
+    }
   }
 }

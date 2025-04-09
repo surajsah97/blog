@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
@@ -72,14 +72,23 @@ export class SocialAuthCallbackComponent implements OnInit {
   isLoading = true;
   error = false;
   errorMessage = '';
+  private isBrowser: boolean;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   ngOnInit(): void {
+    if (!this.isBrowser) {
+      console.log('Not in browser environment, skipping auth processing');
+      return;
+    }
+    
     // Get the response data from the URL
     this.route.queryParams.subscribe(params => {
       console.log('Social auth callback params:', params);
@@ -94,9 +103,9 @@ export class SocialAuthCallbackComponent implements OnInit {
           
           // Process the authentication data
           this.authService.processAuthCallback(params['token'], userData);
-          this.router.navigate(['/blog']);
           
-          // The processAuthCallback method will handle navigation
+          // Navigate to dashboard or home page
+          this.router.navigate(['/dashboard']);
         } catch (error) {
           console.error('Error processing auth callback:', error);
           this.handleError('Failed to process authentication data');

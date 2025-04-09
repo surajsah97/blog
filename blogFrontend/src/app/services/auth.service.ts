@@ -31,10 +31,12 @@ export class AuthService {
   }
   
   login(email: string, password: string): Observable<any> {
+    console.log('Login request:', { email, password },`${this.API_URL}/login`);
     return this.http.post(`${this.API_URL}/login`, { email, password })
       .pipe(
         tap((response: any) => {
           if (response.token && this.isBrowser) {
+            console.log('Token received:', response.token);
             localStorage.setItem('auth_token', response.token);
             localStorage.setItem('user', JSON.stringify(response.user));
             this.isAuthenticatedSubject.next(true);
@@ -76,7 +78,15 @@ export class AuthService {
   }
   
   private hasToken(): boolean {
-    return !!this.getToken();
+    if (!this.isBrowser) {
+      return false;
+    }
+    try {
+      return !!localStorage.getItem('auth_token');
+    } catch (error) {
+      console.warn('Error accessing localStorage:', error);
+      return false;
+    }
   }
   
   // Handle social login redirects
