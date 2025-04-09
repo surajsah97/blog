@@ -1,0 +1,57 @@
+<header class="app-header">
+  <div class="container">
+    <div class="header-content">
+      <div class="logo">
+        <a routerLink="/">
+          <h1>BlogApp</h1>
+        </a>
+      </div>
+      
+      <nav class="desktop-nav">
+        <ul>
+          <li><a routerLink="/blog" routerLinkActive="active" *ngIf="!isLoginPage">Blog</a></li>
+          <li *ngIf="isAuthenticated"><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
+        </ul>
+      </nav>
+      
+      <div class="auth-actions">
+        <ng-container *ngIf="!isAuthenticated">
+          <a routerLink="/auth/login" class="login-btn">Login</a>
+          <a routerLink="/auth/register" class="register-btn">Register</a>
+        </ng-container>
+        
+        <div *ngIf="isAuthenticated" class="user-menu">
+          <button class="user-menu-btn" (click)="toggleMenu()">
+            <span class="user-name">{{ currentUser?.name || 'User' }}</span>
+            <span class="avatar">
+              {{ (currentUser?.name || 'U')[0] }}
+            </span>
+          </button>
+          
+          <div class="dropdown-menu" [class.open]="isMenuOpen">
+            <a routerLink="/dashboard">Dashboard</a>
+            <a routerLink="/blog/new">New Post</a>
+            <button (click)="logout()">Logout</button>
+          </div>
+        </div>
+      </div>
+      
+      <button class="mobile-menu-btn" (click)="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    
+    <div class="mobile-nav" [class.open]="isMenuOpen">
+      <ul>
+        <li><a routerLink="/blog" routerLinkActive="active" *ngIf="!isLoginPage" (click)="isMenuOpen = false">Blog</a></li>
+        <li *ngIf="isAuthenticated"><a routerLink="/dashboard" routerLinkActive="active" (click)="isMenuOpen = false">Dashboard</a></li>
+        <li *ngIf="isAuthenticated"><a routerLink="/blog/new" routerLinkActive="active" (click)="isMenuOpen = false">New Post</a></li>
+        <li *ngIf="isAuthenticated"><button (click)="logout(); isMenuOpen = false">Logout</button></li>
+        <li *ngIf="!isAuthenticated"><a routerLink="/auth/login" routerLinkActive="active" (click)="isMenuOpen = false">Login</a></li>
+        <li *ngIf="!isAuthenticated"><a routerLink="/auth/register" routerLinkActive="active" (click)="isMenuOpen = false">Register</a></li>
+      </ul>
+    </div>
+  </div>
+</header>

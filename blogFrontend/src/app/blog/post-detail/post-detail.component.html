@@ -1,0 +1,84 @@
+<div class="post-detail-container">
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Loading post...</p>
+  </div>
+  
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+    <a routerLink="/blog" class="back-link">Back to Posts</a>
+  </div>
+  
+  <div *ngIf="post && !isLoading" class="post-content">
+    <a routerLink="/blog" class="back-link">← Back to Posts</a>
+    
+    <div class="post-header">
+      <h1 class="post-title">{{ post.title }}</h1>
+      
+      <div class="post-meta">
+        <div class="post-info">
+          <span class="post-date">{{ post.createdAt | date:'mediumDate' }}</span>
+          <span class="post-author" *ngIf="post.author?.name">By {{ post.author.name }}</span>
+        </div>
+        
+        <div class="post-stats">
+          <span class="views"><i class="fa fa-eye"></i> {{ post.viewCount }} views</span>
+          <button 
+            class="like-button" 
+            [class.liked]="post.likedBy && post.likedBy.includes(currentUser?._id)"
+            (click)="likePost()"
+            [disabled]="!isAuthenticated"
+          >
+            <i class="fa fa-heart"></i> {{ post.likes }}
+          </button>
+        </div>
+      </div>
+      
+      <div class="post-tags" *ngIf="post.tags && post.tags.length > 0">
+        <span *ngFor="let tag of post.tags" class="tag">{{ tag }}</span>
+      </div>
+    </div>
+    
+    <div class="featured-image" *ngIf="post.imageUrl">
+      <img [src]="post.imageUrl" [alt]="post.title">
+    </div>
+    
+    <div class="post-body" [innerHTML]="post.content"></div>
+    
+    <div class="comments-section">
+      <h3>Comments ({{ post.comments && post.comments.length || 0 }})</h3>
+      
+      <div *ngIf="!isAuthenticated" class="login-prompt">
+        <p>Please <a routerLink="/auth/login">login</a> to leave a comment.</p>
+      </div>
+      
+      <div *ngIf="isAuthenticated" class="comment-form">
+        <textarea 
+          [(ngModel)]="newComment" 
+          placeholder="Write a comment..." 
+          rows="3"
+        ></textarea>
+        <button 
+          (click)="submitComment()" 
+          [disabled]="!newComment.trim()"
+        >
+          Post Comment
+        </button>
+      </div>
+      
+      <div class="comments-list">
+        <div *ngIf="post.comments && post.comments.length === 0" class="no-comments">
+          <p>No comments yet. Be the first to comment!</p>
+        </div>
+        
+        <div *ngFor="let comment of post.comments" class="comment">
+          <div class="comment-header">
+            <span class="comment-author">{{ comment.author?.name || 'Anonymous' }}</span>
+            <span class="comment-date">{{ comment.createdAt | date:'short' }}</span>
+          </div>
+          <div class="comment-content">{{ comment.content }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

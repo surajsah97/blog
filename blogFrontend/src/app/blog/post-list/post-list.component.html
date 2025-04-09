@@ -1,0 +1,40 @@
+<div class="post-list-container">
+  <h1>Blog Posts</h1>
+  
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Loading posts...</p>
+  </div>
+  
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+  
+  <div *ngIf="!isLoading && !error && posts.length === 0" class="no-posts">
+    <p>No posts found. Check back later!</p>
+  </div>
+  
+  <div class="posts-grid">
+    <div *ngFor="let post of posts" class="post-card">
+      <div class="post-image" *ngIf="post.imageUrl">
+        <img [src]="post.imageUrl" [alt]="post.title">
+      </div>
+      <div class="post-content">
+        <h2 class="post-title">{{ post.title }}</h2>
+        <p class="post-excerpt">{{ post.excerpt || (post.content | slice:0:150) + '...' }}</p>
+        <div class="post-meta">
+          <span class="post-date">{{ post.createdAt | date }}</span>
+          <span class="post-author" *ngIf="post.author?.name">By {{ post.author.name }}</span>
+        </div>
+        <div class="post-tags" *ngIf="post.tags && post.tags.length > 0">
+          <span *ngFor="let tag of post.tags" class="tag">{{ tag }}</span>
+        </div>
+        <div class="post-stats">
+          <span class="likes"><i class="fa fa-heart"></i> {{ post.likes }}</span>
+          <span class="views"><i class="fa fa-eye"></i> {{ post.viewCount }}</span>
+        </div>
+        <a [routerLink]="['/blog', post.slug || post._id]" class="read-more">Read More</a>
+      </div>
+    </div>
+  </div>
+</div>

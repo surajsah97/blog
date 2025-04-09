@@ -1,0 +1,109 @@
+<div class="editor-container">
+  <h1>{{ isEditing ? 'Edit Post' : 'Create New Post' }}</h1>
+  
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>{{ isEditing ? 'Loading post...' : 'Processing...' }}</p>
+  </div>
+  
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+  
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+  
+  <form [formGroup]="postForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+    <div class="form-group">
+      <label for="title">Title *</label>
+      <input 
+        type="text" 
+        id="title" 
+        formControlName="title" 
+        placeholder="Enter post title"
+      >
+      <div *ngIf="postForm.get('title')?.invalid && postForm.get('title')?.touched" class="error-text">
+        <span *ngIf="postForm.get('title')?.errors?.['required']">Title is required</span>
+        <span *ngIf="postForm.get('title')?.errors?.['minlength']">Title must be at least 3 characters</span>
+        <span *ngIf="postForm.get('title')?.errors?.['maxlength']">Title cannot exceed 100 characters</span>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="excerpt">Excerpt</label>
+      <textarea 
+        id="excerpt" 
+        formControlName="excerpt" 
+        placeholder="Brief summary of your post (optional)"
+        rows="2"
+      ></textarea>
+      <div *ngIf="postForm.get('excerpt')?.invalid && postForm.get('excerpt')?.touched" class="error-text">
+        <span *ngIf="postForm.get('excerpt')?.errors?.['maxlength']">Excerpt cannot exceed 300 characters</span>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="content">Content *</label>
+      <textarea 
+        id="content" 
+        formControlName="content" 
+        placeholder="Write your post content here"
+        rows="10"
+      ></textarea>
+      <div *ngIf="postForm.get('content')?.invalid && postForm.get('content')?.touched" class="error-text">
+        <span *ngIf="postForm.get('content')?.errors?.['required']">Content is required</span>
+        <span *ngIf="postForm.get('content')?.errors?.['minlength']">Content must be at least 10 characters</span>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="imageUrl">Featured Image URL</label>
+      <input 
+        type="text" 
+        id="imageUrl" 
+        formControlName="imageUrl" 
+        placeholder="https://example.com/image.jpg (optional)"
+      >
+      <div *ngIf="postForm.get('imageUrl')?.invalid && postForm.get('imageUrl')?.touched" class="error-text">
+        <span *ngIf="postForm.get('imageUrl')?.errors?.['pattern']">Please enter a valid URL</span>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="tags">Tags</label>
+      <input 
+        type="text" 
+        id="tags" 
+        formControlName="tags" 
+        placeholder="Enter tags separated by commas (optional)"
+      >
+      <small class="helper-text">Example: technology, programming, web development</small>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group status-group">
+        <label for="status">Status</label>
+        <select id="status" formControlName="status">
+          <option value="draft">Draft</option>
+          <option value="published">Published</option>
+          <option value="archived">Archived</option>
+        </select>
+      </div>
+      
+      <div class="form-group featured-group">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="featured">
+          Featured Post
+        </label>
+      </div>
+    </div>
+    
+    <div class="form-actions">
+      <button type="button" class="cancel-btn" routerLink="/blog">Cancel</button>
+      <button type="submit" class="submit-btn" [disabled]="postForm.invalid">
+        {{ isEditing ? 'Update Post' : 'Create Post' }}
+      </button>
+    </div>
+  </form>
+</div>

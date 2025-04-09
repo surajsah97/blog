@@ -1,0 +1,225 @@
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin: 0;
+}
+
+.new-post-btn {
+  background-color: #3498db;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.new-post-btn:hover {
+  background-color: #2980b9;
+}
+
+.user-info {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+h2 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.posts-section h3 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 0;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #3498db;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.no-posts {
+  text-align: center;
+  padding: 50px 0;
+  color: #666;
+}
+
+.create-post-link {
+  display: inline-block;
+  margin-top: 15px;
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.create-post-link:hover {
+  text-decoration: underline;
+}
+
+.posts-table {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-header {
+  display: flex;
+  background-color: #f8f9fa;
+  padding: 15px;
+  font-weight: 600;
+  color: #495057;
+}
+
+.table-row {
+  display: flex;
+  padding: 15px;
+  border-top: 1px solid #e9ecef;
+  align-items: center;
+}
+
+.table-row:hover {
+  background-color: #f8f9fa;
+}
+
+.col-title {
+  flex: 3;
+}
+
+.col-date {
+  flex: 1;
+}
+
+.col-status {
+  flex: 1;
+}
+
+.col-actions {
+  flex: 2;
+  display: flex;
+  gap: 10px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-badge.draft {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.status-badge.published {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge.archived {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.action-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.view-btn {
+  background-color: #e9ecef;
+  color: #495057;
+  border: none;
+}
+
+.edit-btn {
+  background-color: #e3f2fd;
+  color: #0d6efd;
+  border: none;
+}
+
+.delete-btn {
+  background-color: #f8d7da;
+  color: #dc3545;
+  border: none;
+}
+
+.view-btn:hover {
+  background-color: #dee2e6;
+}
+
+.edit-btn:hover {
+  background-color: #cfe2ff;
+}
+
+.delete-btn:hover {
+  background-color: #f5c2c7;
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .table-header, .table-row {
+    flex-direction: column;
+    padding: 10px;
+  }
+  
+  .col-title, .col-date, .col-status, .col-actions {
+    width: 100%;
+    padding: 5px 0;
+  }
+  
+  .col-actions {
+    justify-content: flex-start;
+  }
+}

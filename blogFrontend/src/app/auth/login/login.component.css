@@ -1,0 +1,186 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 450px;
+  padding: 30px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #555;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #4285f4;
+}
+
+.error-text {
+  color: #d93025;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+  background-color: #3367d6;
+}
+
+.login-btn:disabled {
+  background-color: #a8c7fa;
+  cursor: not-allowed;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.divider span {
+  padding: 0 10px;
+  color: #777;
+  font-size: 14px;
+}
+
+.social-login {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.google-btn,
+.facebook-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.google-btn {
+  background-color: white;
+  color: #757575;
+  border: 1px solid #ddd;
+}
+
+.google-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.facebook-btn {
+  background-color: #1877f2;
+  color: white;
+  border: none;
+}
+
+.facebook-btn:hover {
+  background-color: #166fe5;
+}
+
+.google-btn img,
+.facebook-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.register-link {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+}
+
+.register-link a {
+  color: #4285f4;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  background-color: #fdeded;
+  color: #d93025;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.social-suggestion {
+  margin-top: 10px;
+}
+
+.suggestion-btn {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.suggestion-btn:hover {
+  background-color: #3367d6;
+}
