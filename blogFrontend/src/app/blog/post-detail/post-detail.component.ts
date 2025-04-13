@@ -95,7 +95,11 @@ export class PostDetailComponent implements OnInit {
     
     this.postService.addComment(this.post._id, this.newComment).subscribe({
       next: (updatedPost) => {
-        this.post = updatedPost;
+        // Create a new array reference to trigger change detection
+        this.post = {
+          ...updatedPost,
+          comments: [...updatedPost.comments]
+        };
         this.newComment = '';
       },
       error: (err) => {

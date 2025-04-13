@@ -18,8 +18,8 @@ export const authGuard: CanActivateFn = (route, state) => {
         const returnUrl = state.url;
         console.log('Not authenticated, redirecting to login. Return URL:', returnUrl);
         
-        // Store the return URL before navigating
-        if (returnUrl && returnUrl !== '/auth/login') {
+        // Store the return URL before navigating (check for localStorage availability)
+        if (returnUrl && returnUrl !== '/auth/login' && typeof localStorage !== 'undefined') {
           localStorage.setItem('returnUrl', returnUrl);
         }
         

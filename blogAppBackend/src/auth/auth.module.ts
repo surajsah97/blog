@@ -19,10 +19,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         UsersModule,
         PassportModule,
         // Use ConfigService to get JWT secret from environment variables
-        ConfigModule.forRoot({
-            isGlobal: true,
-            envFilePath: '.env',
-        }),
         JwtModule.registerAsync({
             imports: [ConfigModule],
             useFactory: async (configService: ConfigService) => ({

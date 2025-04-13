@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./blogAppBackend
+    container_name: blog-backend
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongo:27017/blogapp
+      - JWT_SECRET=your_jwt_secret
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_CALLBACK_URL=http://localhost:3001/api/auth/google/redirect
+    depends_on:
+      - mongo
+    networks:
+      - blog-network
+
+  frontend:
+    build: ./blogFrontend
+    container_name: blog-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - blog-network
+
+  mongo:
+    image: mongo:latest
+    container_name: blog-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - blog-network
+
+networks:
+  blog-network:
+    driver: bridge
+
+volumes:
+  mongo-data:

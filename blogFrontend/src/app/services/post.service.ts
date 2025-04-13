@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Post } from '../models/post.model';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,12 @@ export class PostService {
 
   addComment(id: string, comment: string): Observable<Post> {
     console.log('Adding comment to post:', id, 'Comment:', comment);
-    return this.http.post<Post>(`${this.API_URL}/${id}/comment`, { text: comment });
+    return this.http.post<Post>(`${this.API_URL}/${id}/comment`, { 
+      text: comment 
+    }).pipe(
+      tap(updatedPost => {
+        console.log('Updated post with comment:', updatedPost);
+      })
+    );
   }
 }
