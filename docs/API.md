@@ -9,14 +9,14 @@ Allows registered users to sign in using their email and password.
 **Request Format**:
 ```json
 {
-  "email": "your@email.com",
-  "password": "your_password"
+  "email": "suraj@gmail.com",
+  "password": "Surajsah@97"
 }
 ```
 **Successful Response**:
 ```json
 {
-  "accessToken": "your.jwt.token.here",
+  "accessToken": "",
   "user": {
     "id": 123,
     "email": "your@email.com"
