@@ -1,0 +1,948 @@
+{
+  "info": {
+    "name": "Blog App Backend - Complete API",
+    "description": "Comprehensive API collection for Blog App Backend with authentication, profile management, and security features",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refreshToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "email",
+      "value": "test@example.com",
+      "type": "string"
+    },
+    {
+      "key": "otp",
+      "value": "123456",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Signup",
+          "item": [
+            {
+              "name": "Signup with Password",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"SecurePass123!\",\n  \"signupMethod\": \"password\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"userName\": \"johndoe\",\n  \"phone\": \"+1234567890\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/signup/password",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "signup", "password"]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 201) {",
+                      "    const response = pm.response.json();",
+                      "    pm.collectionVariables.set('userId', response.user._id);",
+                      "    pm.collectionVariables.set('accessToken', response.token);",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Signup with OTP",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"otp@example.com\",\n  \"signupMethod\": \"otp\",\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"userName\": \"janesmith\",\n  \"phone\": \"+1234567891\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/signup/otp",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "signup", "otp"]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 201) {",
+                      "    const response = pm.response.json();",
+                      "    pm.collectionVariables.set('userId', response.user._id);",
+                      "    pm.collectionVariables.set('accessToken', response.token);",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Signup with Social",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"social@example.com\",\n  \"signupMethod\": \"social\",\n  \"googleId\": \"google_user_id_123\",\n  \"firstName\": \"Social\",\n  \"lastName\": \"User\",\n  \"userName\": \"socialuser\",\n  \"pic\": \"https://example.com/profile.jpg\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/signup/social",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "signup", "social"]
+                }
+              }
+            },
+            {
+              "name": "Verify OTP",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"otp@example.com\",\n  \"otp\": {{otp}}\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/verify-otp",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "verify-otp"]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 200) {",
+                      "    const response = pm.response.json();",
+                      "    pm.collectionVariables.set('accessToken', response.token);",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Resend OTP",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"otp@example.com\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/resend-otp",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "resend-otp"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "item": [
+            {
+              "name": "Login with Password",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"SecurePass123!\",\n  \"loginMethod\": \"password\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login/password",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "login", "password"]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 200) {",
+                      "    const response = pm.response.json();",
+                      "    pm.collectionVariables.set('accessToken', response.accessToken);",
+                      "    pm.collectionVariables.set('refreshToken', response.refreshToken);",
+                      "    pm.collectionVariables.set('userId', response.user._id);",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Send OTP for Login",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"{{email}}\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login/send-otp",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "login", "send-otp"]
+                }
+              }
+            },
+            {
+              "name": "Login with OTP",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"{{email}}\",\n  \"otp\": {{otp}},\n  \"loginMethod\": \"otp\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login/otp",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "login", "otp"]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 200) {",
+                      "    const response = pm.response.json();",
+                      "    pm.collectionVariables.set('accessToken', response.accessToken);",
+                      "    pm.collectionVariables.set('refreshToken', response.refreshToken);",
+                      "    pm.collectionVariables.set('userId', response.user._id);",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Login with Social",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"social@example.com\",\n  \"googleId\": \"google_user_id_123\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login/social",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "login", "social"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Password Reset",
+          "item": [
+            {
+              "name": "Request Password Reset",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"{{email}}\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/password/reset",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "password", "reset"]
+                }
+              }
+            },
+            {
+              "name": "Confirm Password Reset",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"{{email}}\",\n  \"resetToken\": \"your_reset_token_here\",\n  \"newPassword\": \"NewSecurePass123!\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/password/reset/confirm",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "password", "reset", "confirm"]
+                }
+              }
+            },
+            {
+              "name": "Change Password",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"currentPassword\": \"SecurePass123!\",\n  \"newPassword\": \"NewSecurePass123!\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/password/change",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "password", "change"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Token Management",
+          "item": [
+            {
+              "name": "Refresh Access Token",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/token/refresh",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "token", "refresh"]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 200) {",
+                      "    const response = pm.response.json();",
+                      "    pm.collectionVariables.set('accessToken', response.accessToken);",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Revoke Refresh Token",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/token/revoke",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "token", "revoke"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Social Authentication",
+          "item": [
+            {
+              "name": "Google Login",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/auth/google",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "google"]
+                }
+              }
+            },
+            {
+              "name": "Google Redirect",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/auth/google/redirect",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "google", "redirect"]
+                }
+              }
+            },
+            {
+              "name": "Facebook Login",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/auth/facebook",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "facebook"]
+                }
+              }
+            },
+            {
+              "name": "Facebook Redirect",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/auth/facebook/redirect",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "facebook", "redirect"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Profile Management",
+      "item": [
+        {
+          "name": "Get Profile",
+          "item": [
+            {
+              "name": "Get My Profile",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/profile/me",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["profile", "me"]
+                }
+              }
+            },
+            {
+              "name": "Get User Profile by ID",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/profile/{{userId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["profile", "{{userId}}"]
+                }
+              }
+            },
+            {
+              "name": "Get Full Profile",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/profile/me/full",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["profile", "me", "full"]
+                }
+              }
+            },
+            {
+              "name": "Get Profile by Email",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/profile/email/{{email}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["profile", "email", "{{email}}"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Profile",
+          "item": [
+            {
+              "name": "Update My Profile",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"userName\": \"johndoe\",\n  \"phone\": \"+1234567890\",\n  \"bio\": \"Software Developer\",\n  \"location\": \"New York, NY\",\n  \"website\": \"https://johndoe.com\",\n  \"pic\": \"https://example.com/profile.jpg\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/profile/me",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["profile", "me"]
+                }
+              }
+            },
+            {
+              "name": "Update User Profile by ID",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"bio\": \"Updated Software Developer\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/profile/{{userId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["profile", "{{userId}}"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Profile",
+          "item": [
+            {
+              "name": "Delete My Profile",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/profile/me",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["profile", "me"]
+                }
+              }
+            },
+            {
+              "name": "Delete User Profile by ID",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/profile/{{userId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["profile", "{{userId}}"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Search",
+          "item": [
+            {
+              "name": "Search Users",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/profile/search/users?q=john&limit=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["profile", "search", "users"],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "john"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Testing Scenarios",
+      "item": [
+        {
+          "name": "Complete Signup Flow",
+          "item": [
+            {
+              "name": "1. Signup with Password",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"flow@example.com\",\n  \"password\": \"SecurePass123!\",\n  \"signupMethod\": \"password\",\n  \"firstName\": \"Flow\",\n  \"lastName\": \"Test\",\n  \"userName\": \"flowtest\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/signup/password",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "signup", "password"]
+                }
+              }
+            },
+            {
+              "name": "2. Login with Password",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"flow@example.com\",\n  \"password\": \"SecurePass123!\",\n  \"loginMethod\": \"password\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login/password",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "login", "password"]
+                }
+              }
+            },
+            {
+              "name": "3. Get Profile",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/profile/me",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["profile", "me"]
+                }
+              }
+            },
+            {
+              "name": "4. Update Profile",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bio\": \"Updated bio for flow test\",\n  \"location\": \"San Francisco, CA\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/profile/me",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["profile", "me"]
+                }
+              }
+            },
+            {
+              "name": "5. Logout",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/token/revoke",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "token", "revoke"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "OTP Flow Test",
+          "item": [
+            {
+              "name": "1. Signup with OTP",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"otpflow@example.com\",\n  \"signupMethod\": \"otp\",\n  \"firstName\": \"OTP\",\n  \"lastName\": \"Flow\",\n  \"userName\": \"otpflow\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/signup/otp",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "signup", "otp"]
+                }
+              }
+            },
+            {
+              "name": "2. Verify OTP (Check email first)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"otpflow@example.com\",\n  \"otp\": 123456\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/verify-otp",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "verify-otp"]
+                }
+              }
+            },
+            {
+              "name": "3. Send Login OTP",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"otpflow@example.com\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login/send-otp",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "login", "send-otp"]
+                }
+              }
+            },
+            {
+              "name": "4. Login with OTP",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"otpflow@example.com\",\n  \"otp\": 123456,\n  \"loginMethod\": \"otp\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login/otp",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "login", "otp"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Error Scenarios",
+          "item": [
+            {
+              "name": "Invalid Login",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"WrongPassword123!\",\n  \"loginMethod\": \"password\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login/password",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "login", "password"]
+                }
+              }
+            },
+            {
+              "name": "Invalid OTP",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"test@example.com\",\n  \"otp\": 999999,\n  \"loginMethod\": \"otp\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login/otp",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["auth", "login", "otp"]
+                }
+              }
+            },
+            {
+              "name": "Unauthorized Profile Access",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/profile/me",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["profile", "me"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
